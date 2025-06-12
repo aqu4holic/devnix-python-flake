@@ -1,2 +1,2 @@
 # devnix-python-flake
-Flake template for devenv Python on NixOS.
+Nix flake template for devenv Python on NixOS.
