@@ -6,26 +6,27 @@ let
         glib
         libz
         zlib
+
+        # cuda support
+        cudaPackages.cudatoolkit
+        linuxKernel.packages.linux_6_15.nvidia_x11
     ];
 in
 {
     env = {
         LD_LIBRARY_PATH = "${with pkgs; lib.makeLibraryPath buildInputs}";
-        UV_PROJECT_ENVIRONMENT = lib.mkForce "";
+        CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
+        EXTRA_LDFLAGS = "-L/lib -L${pkgs.linuxKernel.packages.linux_6_15.nvidia_x11}/lib";
+        UV_PROJECT_ENVIRONMENT = lib.mkForce null;
         UV_TORCH_BACKEND = "auto";
     };
 
     languages.python = {
         enable = true;
-        # version = "3.12.7";
 
         uv = {
             enable = true;
         };
-
-        # venv = {
-        #     enable = true;
-        # };
     };
 
     scripts = {
