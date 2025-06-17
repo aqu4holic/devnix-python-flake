@@ -42,4 +42,8 @@ in
             uv pip
         '';
     };
+
+    enterShell = ''
+        source .venv/bin/activate
+    '';
 }
