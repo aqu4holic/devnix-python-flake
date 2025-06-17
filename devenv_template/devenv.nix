@@ -9,7 +9,11 @@ let
     ];
 in
 {
-    env = { LD_LIBRARY_PATH = "${with pkgs; lib.makeLibraryPath buildInputs}"; };
+    env = {
+        LD_LIBRARY_PATH = "${with pkgs; lib.makeLibraryPath buildInputs}";
+        UV_PROJECT_ENVIRONMENT = lib.mkForce "";
+        UV_TORCH_BACKEND = "auto";
+    };
 
     languages.python = {
         enable = true;
