@@ -6,6 +6,8 @@ let
         glib
         libz
         zlib
+        libGL
+        libGLU
 
         # cuda support
         cudaPackages.cudatoolkit
