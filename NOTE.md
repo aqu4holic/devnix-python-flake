@@ -31,3 +31,6 @@ name = "pytorch-cu128"
 url = "https://download.pytorch.org/whl/cu128"
 explicit = true
 ```
+
+## issue with `UV_TORCH_BACKEND=auto`
+it wont resolve the torch backend, gonna set it manually like the above
