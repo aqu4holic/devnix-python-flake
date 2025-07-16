@@ -10,7 +10,11 @@ let
         libGLU
 
         # cuda support
+        linuxPackages.nvidiaPackages.stable
         cudaPackages.cudatoolkit
+        cudaPackages.cuda_cudart
+        cudaPackages.cudnn
+        cudaPackages.cuda_nvcc
         linuxKernel.packages.linux_6_15.nvidia_x11
     ];
 in
@@ -22,6 +26,15 @@ in
         UV_PROJECT_ENVIRONMENT = lib.mkForce null;
         UV_TORCH_BACKEND = "auto";
     };
+
+    packages = with pkgs; [
+        linuxPackages.nvidiaPackages.stable
+        cudaPackages.cudatoolkit
+        cudaPackages.cuda_cudart
+        cudaPackages.cudnn
+        cudaPackages.cuda_nvcc
+        linuxKernel.packages.linux_6_15.nvidia_x11
+    ];
 
     languages.python = {
         enable = true;
