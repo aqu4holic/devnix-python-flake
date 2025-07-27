@@ -34,3 +34,8 @@ explicit = true
 
 ## issue with `UV_TORCH_BACKEND=auto`
 it wont resolve the torch backend, gonna set it manually like the above
+
+# inputs channel
+i would not recommend using the `unstable` branch (inside the `devenv.yaml`), because it will mismatch the nvidia driver version with your system's. i suggest 2 ways:
+- fork this repo, add a `devenv.lock` (with the `nvidia-x11` version matching your system) in the `devenv_template` folder
+- create an overlay in the `devenv.nix` file, which i pushed with this commit (my version gotta have a patch and it took me 3 hours to fix this 💀)
