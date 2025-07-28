@@ -8,37 +8,17 @@ let
         extraPrefix = "kernel/";
     };
 
-    # Define the overlay to override nvidia_x11
-    nvidiaOverlay = final: prev: {
-        linuxKernel = prev.linuxKernel // {
-            packages = prev.linuxKernel.packages // {
-                linux_6_15 = prev.linuxKernel.packages.linux_6_15 // {
-                    nvidia_x11 = prev.linuxKernel.packages.linux_6_15.nvidia_x11.overrideAttrs (old: rec {
-                        version = "570.153.02";
-                        src = prev.fetchurl {
-                            url = "https://download.nvidia.com/XFree86/Linux-x86_64/${version}/NVIDIA-Linux-x86_64-${version}.run";
-                            sha256 = "148886e4f69576fa8fa67140e6e5dd6e51f90b2ec74a65f1a7a7334dfa5de1b6";
-                        };
-                        patches = [ gpl_symbols_linux_615_patch ];
-                    });
-                };
-            };
-        };
-    };
-
-    # Create a custom pkgs with the overlay and allowUnfree
-    customPkgs = import pkgs.path {
-        inherit (pkgs) system;
-        overlays = [ nvidiaOverlay ];
-        config = {
-            allowUnfree = true; # Required for nvidia_x11 and CUDA
-        };
-    };
-
     # Define customNvidia using the overridden pkgs
-    customNvidia = customPkgs.linuxKernel.packages.linux_6_15.nvidia_x11;
+    customNvidia = pkgs.linuxKernel.packages.linux_6_15.nvidia_x11.overrideAttrs (old: {
+        version = "570.153.02";
+        src = pkgs.fetchurl {
+            url = "https://download.nvidia.com/XFree86/Linux-x86_64/570.153.02/NVIDIA-Linux-x86_64-570.153.02.run";
+            sha256 = "148886e4f69576fa8fa67140e6e5dd6e51f90b2ec74a65f1a7a7334dfa5de1b6";
+        };
+        patches = [ gpl_symbols_linux_615_patch ];
+    });
 
-    buildInputs = with customPkgs; [
+    buildInputs = with pkgs; [
         stdenv.cc.cc
         libuv
         glib
@@ -55,13 +35,13 @@ in
 {
     env = {
         LD_LIBRARY_PATH = "${lib.makeLibraryPath buildInputs}";
-        CUDA_PATH = "${customPkgs.cudaPackages.cudatoolkit}";
+        CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
         EXTRA_LDFLAGS = "-L/lib -L${customNvidia}/lib";
         UV_PROJECT_ENVIRONMENT = lib.mkForce null;
         UV_TORCH_BACKEND = "auto";
     };
 
-    packages = with customPkgs; [
+    packages = with pkgs; [
         customNvidia
         cudaPackages.cuda_cudart
         cudaPackages.cudnn
