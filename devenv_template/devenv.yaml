@@ -5,10 +5,15 @@ inputs:
         # for cuda support
         url: github:nixos/nixpkgs/nixos-unstable
 
+    nixpkgs-python:
+        url: github:cachix/nixpkgs-python
+
 # If you're using non-OSS software, you can set allowUnfree to true.
 allowUnfree: true
 nixpkgs:
     allowUnfree:
+        true
+    cudaSupport:
         true
 
 # If you're willing to use a package that's vulnerable
