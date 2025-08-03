@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 let
-    version = "575.64.05";
-    sha256_64bit = "sha256-hfK1D5EiYcGRegss9+H5dDr/0Aj9wPIJ9NVWP3dNUC0=";
+    version = "570.172.08";
+    sha256_64bit = "sha256-AlaGfggsr5PXsl+nyOabMWBiqcbHLG4ij617I4xvoX0=";
 
     # Define customNvidia using the overridden pkgs
     customNvidia = pkgs.linuxKernel.packages.linux_6_15.nvidia_x11.overrideAttrs (old: {
