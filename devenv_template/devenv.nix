@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, ... }:
 let
     version = "575.64.05";
     sha256_64bit = "sha256-hfK1D5EiYcGRegss9+H5dDr/0Aj9wPIJ9NVWP3dNUC0=";
@@ -31,8 +31,12 @@ in
         LD_LIBRARY_PATH = "${lib.makeLibraryPath buildInputs}";
         CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
         EXTRA_LDFLAGS = "-L/lib -L${customNvidia}/lib";
-        UV_PROJECT_ENVIRONMENT = lib.mkForce null;
+
+        # uv settings because devenv sucks
+        # should read: https://docs.astral.sh/uv/reference/environment/
+        UV_PROJECT_ENVIRONMENT = lib.mkForce null; # change the default .venv path
         UV_TORCH_BACKEND = "auto";
+        UV_PYTHON_DOWNLOADS = lib.mkForce "manual"; # allow custom python version
     };
 
     packages = with pkgs; [
