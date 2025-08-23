@@ -31,6 +31,7 @@ in
         LD_LIBRARY_PATH = "${lib.makeLibraryPath buildInputs}";
         CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
         EXTRA_LDFLAGS = "-L/lib -L${customNvidia}/lib";
+        TRITON_LIBCUDA_PATH = "${customNvidia}/lib";
 
         # uv settings because devenv sucks
         # should read: https://docs.astral.sh/uv/reference/environment/
