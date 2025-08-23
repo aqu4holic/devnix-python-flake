@@ -35,8 +35,9 @@ in
         # uv settings because devenv sucks
         # should read: https://docs.astral.sh/uv/reference/environment/
         UV_PROJECT_ENVIRONMENT = lib.mkForce null; # change the default .venv path
-        UV_TORCH_BACKEND = "auto";
         UV_PYTHON_DOWNLOADS = lib.mkForce "manual"; # allow custom python version
+        UV_TORCH_BACKEND = lib.mkForce "auto";
+        UV_PYTHON_PREFERENCE = lib.mkForce "managed";
     };
 
     packages = with pkgs; [
